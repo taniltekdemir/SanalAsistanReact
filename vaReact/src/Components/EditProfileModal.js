@@ -1,9 +1,9 @@
 import Password from 'antd/lib/input/Password';
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap"
-import Alert from 'react-s-alert'
-import axios from 'axios'
+import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import alertify from "alertifyjs";
+import axios from 'axios';
 
 export default class EditProfileModal extends Component {
     state= {
@@ -21,18 +21,10 @@ export default class EditProfileModal extends Component {
     fetchData = () => {
         let data = "username";
         axios.post(`/api/user/getUser`, data)
-        .then((response) => {
-            Alert.success("Kayıt oluşturuldu", {
-              position: 'top-right',
-              effect: 'stackslide',
-              timeout: 5000
-            });
-        }).catch(function (error) {
-            Alert.warning("Kayıt oluşturulamadı!", {
-              position: 'top-right',
-              effect: 'stackslide',
-              timeout: 5000
-          });
+        .then(response => {
+            alertify.success("Profil bilgileri getirildi.");
+        }).catch( error => {
+            alertify.error("İşleminiz gerçekleştirilemedi!");
         });
     }
     
@@ -49,18 +41,10 @@ export default class EditProfileModal extends Component {
         let data= JSON.stringify(obj)
         
         axios.post(`/api/user/saveUser`, data)
-        .then((response) => {
-            Alert.success("Kayıt oluşturuldu", {
-              position: 'top-right',
-              effect: 'stackslide',
-              timeout: 5000
-            });
-        }).catch(function (error) {
-            Alert.warning("Kayıt oluşturulamadı!", {
-              position: 'top-right',
-              effect: 'stackslide',
-              timeout: 5000
-          });
+        .then(response => {
+            alertify.success("Profil  bilgileri kaydedildi.");
+        }).catch(error => {
+            alertify.error("İşleminiz gerçekleştirilemedi!");
         });
 
         self.props.toggleModal(false);

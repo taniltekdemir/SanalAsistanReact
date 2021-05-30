@@ -1,8 +1,8 @@
 import React from "react";
 import axios from 'axios'
-import Alert from 'react-s-alert'
 import { Login } from "./Login";
 import loginImg from "../../logo.png";
+import alertify from "alertifyjs";
 
 export class Register extends React.Component {
     constructor(props) {
@@ -36,28 +36,16 @@ export class Register extends React.Component {
         }
 
         axios.post(`/api/user/saveUser`, data)
-            .then((response) => {
-                Alert.success("Kayıt oluşturuldu", {
-                  position: 'top-right',
-                  effect: 'stackslide',
-                  timeout: 5000
-                });
-            }).catch(function (error) {
-                Alert.warning("Kayıt oluşturulamadı!", {
-                  position: 'top-right',
-                  effect: 'stackslide',
-                  timeout: 5000
-              });
-            });
-
-        
+            .then(response => {
+                alertify.success("Kayıt oluşturuldu");
+            }).catch(error => {
+                alertify.error("Kayıt oluşturulamadı!");
+            });      
 
     }
 
 
     render() {
-        console.log("values", this.state.first_name, this.state.last_name, this.state.email, this.state.password);
-
         return (
             <div className="base-container" ref={this.props.containerRef}>
                 <div className="header">Register</div>

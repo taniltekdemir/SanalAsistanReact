@@ -1,7 +1,8 @@
 import React from "react";
 import loginImg from "../../logo.png";
-import Alert from 'react-s-alert'
-import axios from 'axios'
+import alertify from "alertifyjs";
+import axios from 'axios';
+
 
 export class Login extends React.Component {
     constructor(props) {
@@ -21,27 +22,17 @@ export class Login extends React.Component {
 
 
         let data= JSON.stringify(obj);
+       //axios.post(`/api/user/loginUser`, data)
+       //    .then((response) => {
+       //        localStorage.clear();
+       //        localStorage.setItem('currentUser', response.data);
+       //        alertify.success("Giriş Başarılı.");
+       //    }).catch(function (error) {
+       //        alertify.error("Hatalı İşlem!");
+       //    });
 
-        axios.post(`/api/user/loginUser`, data)
-            .then((response) => {
-                localStorage.clear();
-                localStorage.setItem('currentUser', response.data);
-                Alert.success("Giriş Başarılı", {
-                    position: 'top-right',
-                    effect: 'stackslide',
-                    timeout: 5000
-                });
-            }).catch(function (error) {
-                Alert.warning("Hatalı Giriş!", {
-                    position: 'top-right',
-                    effect: 'stackslide',
-                    timeout: 5000
-                });
-            });
+    }     
 
-        self.props.toggleModal(false);
-
-    }
     render() {
         return (
             <div className="base-container" ref={this.props.containerRef}>

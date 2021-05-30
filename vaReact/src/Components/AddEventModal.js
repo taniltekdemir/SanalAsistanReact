@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
-import { Col, Form, FormGroup, Input, Label, Row } from "reactstrap"
+import { Col, Form, Label, Row } from "reactstrap"
 import Datetime from "react-datetime"
 import 'react-datetime/css/react-datetime.css'
 import moment from "moment/moment"
@@ -8,7 +8,9 @@ import 'moment/locale/tr'
 import { TimePicker } from 'antd'
 import 'antd/dist/antd.css';
 import StarRatingComponent from 'react-star-rating-component'
-import Alert from "react-s-alert"
+import Select from "react-select";
+import alertify from "alertifyjs";
+import axios from 'axios';
 
 export default class AddEventModal extends Component {
 
@@ -22,16 +24,27 @@ export default class AddEventModal extends Component {
         startTime: '',
         finishTime: '',
         rating: 1,
+        status: '',
+        statusList: [
+            { value: 'CANDIDATE', label: 'Aday' },
+            { value: 'ACTIVE', label: 'Aktif' },
+            { value: 'PASSIVE', label: 'Pasif' },
+            { value: 'TERMINATED', label: 'Fesih' },],
+
 
     }
 
+
+    onChangeStatusList = (e) => {
+        let result = e.map(status => ({ recordId: null, status: JSON.parse(status.value) }));
+    }
 
     onChangeText = (e) => {
         let { name, value } = e.target;
         if (name === 'eventName') {
             this.setState({ eventName: value })
-        } else if(name === 'eventDescription') {
-            this.setState({eventDescriptions: value})
+        } else if (name === 'eventDescription') {
+            this.setState({ eventDescriptions: value })
         }
     }
 
@@ -84,29 +97,23 @@ export default class AddEventModal extends Component {
             finishTime: self.state.finishTime,
             rating: self.state.rating
         };
-
-        let params = {
-            url: ``,
-            method: "post",
-            data: JSON.stringify(obj)
-        };
-      //  request(params)
-         // .then(function (response) {
-           //     Alert.success("Etkinlik Oluşturuldu", {
-         //        position: 'top-right',
-         //        effect: 'stackslide',
-         //        timeout: 5000
-         //    });
-         //    self.props.toggleModal(false);
-         //}).catch(function (error) {
-
-        //});
+                
+        axios.post(`/api/user/getUser`, obj)
+            .then(response => {
+                alertify.success("Etkinlik Oluşturuldu");
+                self.props.toggleModal(false);
+            }).catch(error => {
+                alertify.error("İşleminiz gerçekleştirilemedi!");
+            });
 
         self.props.toggleModal(false);
 
     }
 
+
+
     render() {
+        console.log(this.state.status);
         return (
             <div>
                 {this.state.alert}
@@ -192,6 +199,20 @@ export default class AddEventModal extends Component {
                                                 starCount={5}
                                                 value={this.state.rating}
                                                 onStarClick={this.onStarClick.bind(this)}
+                                            />
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col sm={12}>
+                                            Durum Bilgisi: <Select
+                                                className="select-control"
+                                                name="StatusList"
+                                                id="StatusList"
+                                                multi={true}
+                                                placeholder="Seçiniz..."
+                                                value={this.state.status}
+                                                onChange={(e) => e && this.onChangeStatusList(e)}
+                                                options={this.state.statusList}
                                             />
                                         </Col>
                                     </Row>

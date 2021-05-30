@@ -20,8 +20,6 @@ const Navi = (props) => {
 
     const toggle = () => setIsOpen(!isOpen);
 
-    const [showLogoutModal] = useState(false);
-
     return (
         <div>
             <Navbar color="light" light expand="md">
@@ -35,14 +33,14 @@ const Navi = (props) => {
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                            <NavLink href="/components/">Components</NavLink>
+                            <NavLink href="/components/">Etkinliklerim</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                            <NavLink href="https://github.com/reactstrap/reactstrap">Toplantılarım</NavLink>
                         </NavItem>
                         <UncontrolledDropdown nav inNavbar>
                             <DropdownToggle nav caret>
-                                Options
+                                Tercihler
               </DropdownToggle>
                             <DropdownMenu right>
                                 <DropdownItem>
@@ -58,18 +56,10 @@ const Navi = (props) => {
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     </Nav>
-                    <NavbarText onClick={() => this.setState({ showLogoutModal: true })} style={{ position: 'absolute', right: '10px' }}>Çıkış Yap</NavbarText>
                 </Collapse>
             </Navbar>
         </div>
     );
-    {
-        this.state.showLogoutModal &&
-        <LogoutModal
-            modal={this.state.showLogoutModal}
-            toggleModal={(flag) => this.setState({ showLogoutModal: flag })}
-        />
-    }
 }
 
 export default Navi;
